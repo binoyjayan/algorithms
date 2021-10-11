@@ -1,30 +1,8 @@
 #include <map>
 #include <vector>
 #include <iostream>
-#include <unordered_set>
+#include "graph.h"
 using namespace std;
-
-class Graph {
-    int m_E;
-    map<int, vector<int> > m_adj; // adjacency list
-public:
-    int V() {
-        return m_adj.size();
-    }
-    int E() { return m_E; }
-
-    void add_edge(int v, int w) {
-        m_adj[v].push_back(w);
-        m_adj[w].push_back(v);
-        m_E++;
-    }
-    vector<int> adj(int v) {
-        return m_adj[v];
-    }
-    map<int, vector<int> > adj() {
-        return m_adj;
-    }
-};
 
 class CC {
     // can be an array if nodes values are 0..N-1
