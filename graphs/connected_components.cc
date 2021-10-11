@@ -21,32 +21,40 @@ public:
     vector<int> adj(int v) {
         return m_adj[v];
     }
+    map<int, vector<int> > adj() {
+        return m_adj;
+    }
 };
 
-class DFS {
+class CC {
     // can be an array if nodes values are 0..N-1
     map<int, int> m_marked;
-    vector<int> m_items;
+    map<int, int> m_id;
+    int m_count = 0;
 public:
-    DFS(Graph g, int s) {
-        dfs(g, s);
+    CC(Graph g) {
+        connected_components(g);
     }
 
     void dfs(Graph g, int v) {
         m_marked[v] =  true;
-        m_items.push_back(v);
-
+        m_id[v] = m_count;
         for (auto w: g.adj(v)) {
             if (!m_marked[w])
                 dfs(g, w);
         }
     }
-    bool marked(int w) {
-        return m_marked[w];
+    void connected_components(Graph g) {
+        for (auto n: g.adj()) {
+            auto v = n.first;
+            if (!m_marked[v]) {
+                dfs(g, v);
+                m_count++;
+            }
+        }
     }
-    vector<int> items() {
-        return m_items;
-    }
+    int count() { return m_count; }
+    int id(int v) { return m_id[v]; }
 };
 
 void print_vector(vector<int> &vect) {
@@ -73,9 +81,14 @@ int main() {
     cout << "V: " << g.V() << endl;
     cout << "E: " << g.E() << endl;
 
-    DFS d(g, 1);
-    vector<int> v = d.items();
-    print_vector(v);
+    CC d(g);
+    cout << "Number of connected components: "  << d.count() << endl;
+
+    // Print IDs of all connected components
+    for (auto n: g.adj()) {
+        int v = n.first;
+        cout << "id[" << v << "]: "  << d.id(v) << endl;
+    }
     return 0;
 }
 

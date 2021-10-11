@@ -25,6 +25,7 @@ public:
 };
 
 class BFS {
+    // can be an array if nodes values are 0..N-1
     map<int, int> m_marked;
     map<int, int> m_edge_to;
     vector<int> m_items;
