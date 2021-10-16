@@ -1,12 +1,15 @@
 #pragma once
-#include <map>
 #include <vector>
 using namespace std;
 
 class DiGraph {
     int m_E;
-    std::map<int, std::vector<int> > m_adj; // adjacency list
+    std::vector<std::vector<int> > m_adj; // adjacency list
 public:
+    DiGraph(int sz) {
+        m_E = 0;
+        m_adj.insert(m_adj.end(), sz, {});
+    }
     int V() {
         return m_adj.size();
     }
@@ -19,13 +22,12 @@ public:
     std::vector<int> adj(int v) {
         return m_adj[v];
     }
-    std::map<int, std::vector<int> > adj() {
+    std::vector<std::vector<int> > adj() {
         return m_adj;
     }
     DiGraph reverse() {
-        DiGraph R;
-        for (auto n: adj()) {
-            auto v = n.first;
+        DiGraph R(m_adj.size());
+        for (int v = 0; v < m_adj.size(); v++) {
             for (auto w: adj(v)) 
                 R.add_edge(w, v);
         }

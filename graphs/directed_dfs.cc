@@ -1,4 +1,3 @@
-#include <map>
 #include <vector>
 #include <iostream>
 #include "digraph.h"
@@ -6,12 +5,15 @@
 using namespace std;
 
 class DirectedDFS {
-    // can be an array if nodes values are 0..N-1
-    map<int, int> m_marked;
+    bool *m_marked;
     vector<int> m_items;
 public:
     DirectedDFS(DiGraph g, int s) {
+        m_marked = new bool[g.V()];
         dfs(g, s);
+    }
+    ~DirectedDFS() {
+        delete m_marked;
     }
 
     void dfs(DiGraph g, int v) {
@@ -39,20 +41,28 @@ void print_vector(vector<int> &vect) {
    cout << " ]" << endl;
 }
 
+void do_dfs(DiGraph &g, int start) {
+    cout << "DFS starting node " << start << endl;
+    DirectedDFS d(g, start);
+    vector<int> v = d.items();
+    print_vector(v);
+}
+
 int main() {
-    DiGraph g;
-    g.add_edge(1, 2);
+    DiGraph g(4);
+    g.add_edge(0, 1);
+    g.add_edge(0, 2);
+    g.add_edge(0, 3);
     g.add_edge(1, 3);
-    g.add_edge(1, 4);
-    g.add_edge(2, 4);
-    g.add_edge(3, 4);
+    g.add_edge(2, 3);
 
     cout << "V: " << g.V() << endl;
     cout << "E: " << g.E() << endl;
 
-    DirectedDFS d(g, 1);
-    vector<int> v = d.items();
-    print_vector(v);
+    do_dfs(g, 0);
+    do_dfs(g, 1);
+    do_dfs(g, 2);
+    do_dfs(g, 3);
     return 0;
 }
 

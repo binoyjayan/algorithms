@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include "graph.h"
+#include "symbol_graph.h"
 using namespace std;
 
 class DFS {
@@ -29,33 +30,31 @@ public:
     }
 };
 
-void print_vector(vector<int> &vect) {
+void print_vector(SymbolGraph &sg, vector<int> &vect) {
    cout << "[ ";
    for (auto v: vect) {
-      cout << v << ", ";
+       string v_str = sg.name_of(v);
+      cout << v_str << ", ";
    }
    cout << " ]" << endl;
 }
 
 int main() {
-    Graph g(8);
-    g.add_edge(0, 1);
-    g.add_edge(0, 2);
-    g.add_edge(0, 4);
-    g.add_edge(1, 5);
-    g.add_edge(2, 6);
-    g.add_edge(3, 7);
-    g.add_edge(4, 3);
-    g.add_edge(4, 5);
-    g.add_edge(5, 7);
-    g.add_edge(6, 7);
+    SymbolGraph sg(4);
+    Graph *g = sg.G();
+    sg.add_edge("A", "B");
+    sg.add_edge("A", "C");
+    sg.add_edge("A", "D");
+    sg.add_edge("B", "D");
+    sg.add_edge("C", "D");
 
-    cout << "V: " << g.V() << endl;
-    cout << "E: " << g.E() << endl;
 
-    DFS d(g, 1);
+    cout << "V: " << sg.V() << endl;
+    cout << "E: " << sg.E() << endl;
+
+    DFS d(*g, 0);
     vector<int> v = d.items();
-    print_vector(v);
+    print_vector(sg, v);
     return 0;
 }
 

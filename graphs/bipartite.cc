@@ -1,27 +1,25 @@
-#include <map>
 #include <vector>
 #include <iostream>
 #include "graph.h"
 using namespace std;
 
 class Bipartite {
-    // can be an array if nodes values are 0..N-1
-    map<int, int> m_marked;
-    map<int, int> m_color;
+    vector<bool> m_marked;
+    vector<int> m_color;
     bool m_is_bipartite;
 public:
     Bipartite(Graph g) {
         m_is_bipartite = true;
+        m_marked.insert(m_marked.end(), g.V(), false);
+        m_color.insert(m_color.end(), g.V(), 0);
         bipartite(g);
     }
 
     void bipartite(Graph g) {
-        for (auto n: g.adj()) {
-            auto v = n.first;
+        for (int v = 0; v < g.adj().size(); v++) {
             m_color[v] = false;
         }
-        for (auto n: g.adj()) {
-            auto v = n.first;
+        for (int v = 0; v < g.adj().size(); v++) {
             if (!m_marked[v])
                 dfs(g, v);
         }
@@ -30,10 +28,12 @@ public:
         m_marked[v] =  true;
 
         for (auto w: g.adj(v)) {
-            if (!m_marked[w])
+            if (!m_marked[w]) {
+                m_color[w] = !m_color[v];
                 dfs(g, w);
-            else if (m_color[w] == m_color[v])
+            } else if (m_color[w] == m_color[v]) {
                 m_is_bipartite = false;
+            }
         }
     }
     bool is_bipartite() {
@@ -42,11 +42,11 @@ public:
 };
 
 int main() {
-    Graph g;
+    Graph g(4);
+    g.add_edge(0, 1);
     g.add_edge(1, 2);
     g.add_edge(2, 3);
-    g.add_edge(3, 4);
-    g.add_edge(4, 1);
+    g.add_edge(3, 0);
 
     cout << "V: " << g.V() << endl;
     cout << "E: " << g.E() << endl;

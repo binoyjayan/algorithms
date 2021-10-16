@@ -1,4 +1,3 @@
-#include <map>
 #include <vector>
 #include <iostream>
 #include "graph.h"
@@ -6,18 +5,17 @@
 using namespace std;
 
 class Cycle {
-    // can be an array if nodes values are 0..N-1
-    map<int, int> m_marked;
+    vector<bool> m_marked;
     bool m_has_cycle;
 public:
     Cycle(Graph g) {
         m_has_cycle = false;
+        m_marked.insert(m_marked.end(), g.V(), false);
         cycle(g);
     }
 
     void cycle(Graph g) {
-        for (auto n: g.adj()) {
-            auto v = n.first;
+        for (int v = 0; v < g.adj().size(); v++) {
             if (!m_marked[v])
                 dfs(g, v, -1);
         }
@@ -41,11 +39,11 @@ public:
 };
 
 int main() {
-    Graph g;
+    Graph g(4);
+    g.add_edge(0, 1);
     g.add_edge(1, 2);
     g.add_edge(2, 3);
-    g.add_edge(3, 4);
-    g.add_edge(4, 1);
+    g.add_edge(3, 0);
 
     cout << "V: " << g.V() << endl;
     cout << "E: " << g.E() << endl;

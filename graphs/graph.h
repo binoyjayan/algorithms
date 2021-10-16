@@ -1,12 +1,16 @@
 #pragma once
-#include <map>
 #include <vector>
 using namespace std;
 
 class Graph {
     int m_E;
-    std::map<int, std::vector<int> > m_adj; // adjacency list
+    // adjacency list
+    std::vector<std::vector<int> > m_adj;
 public:
+    Graph(int sz) {
+        m_E = 0;
+        m_adj.insert(m_adj.end(), sz, {});
+    }
     int V() {
         return m_adj.size();
     }
@@ -20,7 +24,7 @@ public:
     std::vector<int> adj(int v) {
         return m_adj[v];
     }
-    std::map<int, std::vector<int> > adj() {
+    std::vector<std::vector<int> > adj() {
         return m_adj;
     }
 };

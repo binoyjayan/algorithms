@@ -1,4 +1,3 @@
-#include <map>
 #include <queue>
 #include <vector>
 #include <iostream>
@@ -8,12 +7,13 @@
 using namespace std;
 
 class BFS {
-    // can be an array if nodes values are 0..N-1
-    map<int, int> m_marked;
-    map<int, int> m_edge_to;
+    vector<bool> m_marked;
+    vector<int> m_edge_to;
     vector<int> m_items;
 public:
     BFS(Graph g, int s) {
+        m_marked.insert(m_marked.end(), g.V(), false);
+        m_edge_to.insert(m_edge_to.end(), g.V(), 0);
         bfs(g, s);
     }
 
@@ -52,22 +52,22 @@ void print_vector(vector<int> &vect) {
 }
 
 int main() {
-    Graph g;
-    g.add_edge(1, 2);
-    g.add_edge(1, 3);
+    Graph g(8);
+    g.add_edge(0, 1);
+    g.add_edge(0, 2);
+    g.add_edge(0, 4);
     g.add_edge(1, 5);
     g.add_edge(2, 6);
     g.add_edge(3, 7);
-    g.add_edge(4, 8);
-    g.add_edge(5, 4);
-    g.add_edge(5, 6);
-    g.add_edge(6, 8);
-    g.add_edge(7, 8);
+    g.add_edge(4, 3);
+    g.add_edge(4, 5);
+    g.add_edge(5, 7);
+    g.add_edge(6, 7);
 
     cout << "V: " << g.V() << endl;
     cout << "E: " << g.E() << endl;
 
-    BFS d(g, 1);
+    BFS d(g, 0);
     vector<int> v = d.items();
     print_vector(v);
     return 0;

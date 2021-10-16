@@ -1,16 +1,16 @@
-#include <map>
 #include <vector>
 #include <iostream>
 #include "graph.h"
 using namespace std;
 
 class CC {
-    // can be an array if nodes values are 0..N-1
-    map<int, int> m_marked;
-    map<int, int> m_id;
+    vector<bool> m_marked;
+    vector<int> m_id;
     int m_count = 0;
 public:
     CC(Graph g) {
+        m_marked.insert(m_marked.end(), g.V(), false);
+        m_id.insert(m_id.end(), g.V(), 0);
         connected_components(g);
     }
 
@@ -23,8 +23,7 @@ public:
         }
     }
     void connected_components(Graph g) {
-        for (auto n: g.adj()) {
-            auto v = n.first;
+        for (int v = 0; v < g.V(); v++) {
             if (!m_marked[v]) {
                 dfs(g, v);
                 m_count++;
@@ -44,17 +43,17 @@ void print_vector(vector<int> &vect) {
 }
 
 int main() {
-    Graph g;
-    g.add_edge(1, 2);
-    g.add_edge(1, 3);
+    Graph g(8);
+    g.add_edge(0, 1);
+    g.add_edge(0, 2);
+    g.add_edge(0, 4);
     g.add_edge(1, 5);
     g.add_edge(2, 6);
     g.add_edge(3, 7);
-    g.add_edge(4, 8);
-    g.add_edge(5, 4);
-    g.add_edge(5, 6);
-    g.add_edge(6, 8);
-    g.add_edge(7, 8);
+    g.add_edge(4, 3);
+    g.add_edge(4, 5);
+    g.add_edge(5, 7);
+    g.add_edge(6, 7);
 
     cout << "V: " << g.V() << endl;
     cout << "E: " << g.E() << endl;
@@ -63,8 +62,7 @@ int main() {
     cout << "Number of connected components: "  << d.count() << endl;
 
     // Print IDs of all connected components
-    for (auto n: g.adj()) {
-        int v = n.first;
+    for (int v = 0; v < g.adj().size(); v++) {
         cout << "id[" << v << "]: "  << d.id(v) << endl;
     }
     return 0;
