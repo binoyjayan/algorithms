@@ -62,13 +62,13 @@ public:
     void add_edge(DirectedEdge e) {
         int v = e.from(), w = e.to();
         m_adj[v].push_back(e);
-        m_adj[w].push_back(e);
+        // m_adj[w].push_back(e);
         m_E++;
     }
     void add_edge(int v, int w, double weight) {
         DirectedEdge e(v, w, weight);
         m_adj[v].push_back(e);
-        m_adj[w].push_back(e);
+        // m_adj[w].push_back(e);
         m_E++;
     }
     std::vector<DirectedEdge> adj(int v) {
