@@ -1,3 +1,13 @@
+/*
+
+Given a non-empty string of lower case letters and a non -ve integer
+representing a key, write a function that returns a new string obtained
+by shifting every letter in the input string by k positions in the
+alphabet where k is the key.
+
+Note that letters should wrap around the alphabet.
+*/
+
 #include <string>
 #include <iostream>
 using namespace std;
