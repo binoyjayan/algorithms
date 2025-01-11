@@ -6,6 +6,9 @@
 
 using namespace std;
 
+// Select a pivot element and arranges the array such that elements smaller
+// than the pivot are placed before it and elements larger than the pivot are
+//  placed after it. Return the index (j) where the pivot should be placed.
 int partition(vector<int> &a, int lo, int hi) {
     int i = lo;
     int j = hi + 1;
