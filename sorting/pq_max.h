@@ -10,8 +10,7 @@ class MaxPQ {
     int n = 0;
 public:
     MaxPQ(int maxN) {
-        // Fill the vector with zeros. Use +1 to avoid index 0
-        m_pq.resize(maxN + 1, 0);
+        m_pq.push_back(0);
     }
     bool empty() { return n == 0; }
     int size() { return n; }
@@ -42,14 +41,17 @@ public:
     }
 
     void insert(int v) {
-        m_pq[++n] = v;
+        m_pq.push_back(v);
+        n++;
         swim(n);
     }
     int del_max() {
-        // remove the element at the top (1-indexed)
+        // take the element at the top (1-indexed)
         int max = m_pq[1];
+        // swap the top element with the last element
         exch(1, n--);
-        m_pq[n + 1] = 0;  // avoid loitering
+        // remove the last element
+        m_pq.pop_back();
         sink(1);
         return max;
     }

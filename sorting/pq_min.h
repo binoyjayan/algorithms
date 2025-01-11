@@ -10,7 +10,7 @@ class MinPQ {
     int n = 0;
 public:
     MinPQ(int maxN) {
-        m_pq.insert(m_pq.end(), maxN + 1, 0);
+        m_pq.push_back(0);
     }
     bool empty() { return n == 0; }
     int size() { return n; }
@@ -38,13 +38,14 @@ public:
     }
 
     void insert(int v) {
-        m_pq[++n] = v;
+        m_pq.push_back(v);
+        n++;
         swim(n);
     }
     int del_min() {
         int max = m_pq[1]; // Min key at the top
         exch(1, n--);
-        m_pq[n + 1] = 0;  // avoid loitering?
+        m_pq.pop_back();
         sink(1);
         return max;
     }
