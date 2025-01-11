@@ -1,6 +1,9 @@
 #include <vector>
+#include <iomanip>
 #include <iostream>
 #include <unordered_set>
+#include <unordered_map>
+
 using namespace std;
 
 /*
@@ -9,44 +12,55 @@ using namespace std;
  * input array sum upto the target sum, then the functio should return
  * them in an array.
  */
-vector<int> _twoNumberSum(vector<int> array, int targetSum) {
-    unordered_set<int> nums;    
-    for (int n : nums) {
-        if (nums.find(targetSum - n) == nums.end()) {
-            cout << "insert: " << n << endl;
-            nums.insert(n);
-        } else {
-            return vector<int>{targetSum - n, n};
-        }
-  }
-  return {};
-}
 
 vector<int> twoNumberSum(vector<int> array, int targetSum) {
     unordered_set<int> nums;
     for (const int &n : array) {
-        if (nums.find(targetSum - n) != nums.end()) {
-            return {targetSum - n, n};
+        int other = targetSum - n;
+        if (nums.find(other) != nums.end()) {
+            return {other, n};
         }
-        else {
-            nums.insert(n);
-        }
-  }
-  return {};
+        nums.insert(n);
+    }
+    return {};
 }
 
-void print_vector(vector<int> &vect) {
-   cout << "[ ";
-   for (auto v: vect) {
-      cout << v << ", ";
-   }
-   cout << " ]" << endl;
+std::vector<int> twoNumberSumIndices(const std::vector<int>& numbers, int targetSum) {
+    std::unordered_map<int, int> indices;
+    for (int i = 0; i < numbers.size(); ++i) {
+        int other = targetSum - numbers[i];
+
+        if (indices.find(other) != indices.end()) {
+            if (indices[other] < i) {
+                return {indices[other], i};
+            } else {
+                return {i, indices[other]};
+            }
+        }
+        indices[numbers[i]] = i;
+    }
+    // not found
+    return {};
+}
+
+
+void print_vector(const std::string s, const std::vector<int>& nums) {
+    std::cout << s << " [";
+    for (int i = 0; i < nums.size(); i++) {
+        std::cout << std::setw(3) << nums[i] << ", ";
+    }
+    std::cout << "]" << std::endl;
 }
 
 int main() {
-    vector<int> arr = {3, 5, -4, 8, 11, 1, -1, 6};
-    vector<int> s = twoNumberSum(arr, 10);
-    print_vector(s);
+    vector<int> arr = {2, 7, 11, 15};
+    auto target = 9;
+    print_vector("Numbers", arr);
+    std::cout << "Target sum: " << target << std::endl;
+    vector<int> s = twoNumberSum(arr, target);
+    vector<int> indices = twoNumberSumIndices(arr, target);
+    print_vector("Sum numbers", s);
+    print_vector("Indices", indices);
     return 0;
 }
 

@@ -10,6 +10,7 @@ class MinPQ {
     int n = 0;
 public:
     MinPQ(int maxN) {
+        // Sentinel for 1-indexed array
         m_pq.push_back(0);
     }
     bool empty() { return n == 0; }

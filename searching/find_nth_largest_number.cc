@@ -3,12 +3,22 @@
 #include <ctime>
 #include <chrono>
 #include <random>
+#include <iostream>
+#include <iomanip>
 using namespace std;
 
 void swap(vector<int>&a, int i, int j) {
     int t = a[i];
     a[i] = a[j];
     a[j] = t;
+}
+
+void print_vector(const std::string s, const std::vector<int>& nums) {
+    std::cout << s << " [";
+    for (int i = 0; i < nums.size(); i++) {
+        std::cout << std::setw(2) << nums[i] << ", ";
+    }
+    std::cout << "]" << std::endl;
 }
 
 int partition(vector<int> &a, int left, int right) {
@@ -33,9 +43,10 @@ void print(vector<int> &a) {
     cout << "]" << endl;
 }
 
+// Quick Select algorithm designed for selecting kth element
 int selection(vector<int> &a, int k) {
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-  shuffle (a.begin(), a.end(), std::default_random_engine(seed));
+    shuffle (a.begin(), a.end(), std::default_random_engine(seed));
     int left = 0;
     int right = a.size() - 1;
     while (left < right) {
@@ -60,3 +71,10 @@ vector<int> findThreeLargestNumbers(vector<int> array) {
   return {n3, n2, n1};
 }
 
+int main() {
+    std::vector<int> array = {9, 6, 5, 10, 4, 7, 1, 3, 2, 8};
+    print_vector("NUmbers", array);
+
+    cout << "3rd largest: " << selection(array, array.size() - 3) << endl;
+    return 0;
+}
