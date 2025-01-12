@@ -7,10 +7,7 @@ class Graph {
     // adjacency list
     std::vector<std::vector<int> > m_adj;
 public:
-    Graph(int sz) {
-        m_E = 0;
-        m_adj.insert(m_adj.end(), sz, {});
-    }
+    Graph(int sz) : m_E(0), m_adj(sz) {}
     int V() {
         return m_adj.size();
     }

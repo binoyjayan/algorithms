@@ -6,10 +6,7 @@ class DiGraph {
     int m_E;
     std::vector<std::vector<int> > m_adj; // adjacency list
 public:
-    DiGraph(int sz) {
-        m_E = 0;
-        m_adj.insert(m_adj.end(), sz, {});
-    }
+    DiGraph(int sz) : m_E(0), m_adj(sz) {}
     int V() {
         return m_adj.size();
     }
