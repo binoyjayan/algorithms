@@ -1,80 +1,79 @@
-
-#include <vector>
-#include <ctime>
-#include <chrono>
-#include <random>
+/*
+ * Find nth largest element in an array using min heap
+ * A more efficient algorithm can be used for this purpose
+ # using quick selection that does not use extra space.
+ * It is described in the 'sorting' algorithms.
+ */
 #include <iostream>
+#include <vector>
 #include <iomanip>
-using namespace std;
-
-void swap(vector<int>&a, int i, int j) {
-    int t = a[i];
-    a[i] = a[j];
-    a[j] = t;
-}
+#include <queue>
+#include <functional>
+#include "pq_max.h"
+#include "pq_min.h"
 
 void print_vector(const std::string s, const std::vector<int>& nums) {
     std::cout << s << " [";
     for (int i = 0; i < nums.size(); i++) {
-        std::cout << std::setw(2) << nums[i] << ", ";
+        std::cout << std::setw(3) << nums[i] << ", ";
     }
     std::cout << "]" << std::endl;
 }
 
-int partition(vector<int> &a, int left, int right) {
-    int i = left;
-    int j = right + 1;
-    int v = a[left]; //partitioning element
-    while (true) {
-        while (a[++i] < v) if (i == right) break;
-        while (v < a[--j]) if (j == left) break;
-        if (i >= j) break;
-        swap(a, i, j);
+// Find nth largest element using max heap
+int find_nth_largest_max(std::vector<int>& arr, int n) {
+    MaxPQ pq(arr.size());
+    for(auto n: arr) {
+        pq.insert(n);
     }
-  swap(a, left, j);
-    return j;
+    while(--n) {
+        pq.del_max();
+    }
+    return pq.del_max();
 }
 
-void print(vector<int> &a) {
-    cout << "[";
-    for (auto n: a) {
-        cout << n << ",";
+// Find nth largest element using min heap
+// Maintain only n largest elements:
+// If the size of the heap exceeds n,
+// remove the minimum element (smallest among the largest seen so far).
+int find_nth_largest_min(std::vector<int>& arr, int n) {
+    MinPQ pq(n);
+
+    for (int num : arr) {
+        pq.insert(num);
+        // Ensue only 'n' elements
+        if (pq.size() > n) {
+            pq.del_min();
+        }
     }
-    cout << "]" << endl;
+    // smallest among the n large  numbers
+    return pq.del_min();
 }
 
-// Quick Select algorithm designed for selecting kth element
-int selection(vector<int> &a, int k) {
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    shuffle (a.begin(), a.end(), std::default_random_engine(seed));
-    int left = 0;
-    int right = a.size() - 1;
-    while (left < right) {
-        int j = partition(a, left, right);
-        if (j < k)
-            left = j + 1;
-        else if (j > k)
-            right = j - 1;
-        else
-            return a[k];
+// Use STL
+int find_nth_largest_stl(std::vector<int>& arr, int n) {
+    // Min heap
+    std::priority_queue<int, std::vector<int>, std::greater<int>> pq;
+
+    for (int num : arr) {
+        pq.push(num);
+         // Ensure the heap has at most n elements
+        if (pq.size() > n) {
+            pq.pop(); // Remove the smallest
+        }
     }
-    return a[k];
+
+    // smallest among the n large  numbers
+    return pq.top();
 }
 
-// this find 3rd largest number. this can also be made generic.
-vector<int> findThreeLargestNumbers(vector<int> array) {
-  // Write your code here.
-    int n = array.size();
-    int n1 = selection(array, n - 1);
-    int n2 = selection(array, n - 2);
-    int n3 = selection(array, n - 3);
-  return {n3, n2, n1};
-}
 
 int main() {
     std::vector<int> array = {9, 6, 5, 10, 4, 7, 1, 3, 2, 8};
-    print_vector("NUmbers", array);
+    print_vector("Numbers", array);
 
-    cout << "3rd largest: " << selection(array, array.size() - 3) << endl;
+    cout << "3rd largest: " << find_nth_largest_max(array, 3) << endl;
+    cout << "3rd largest: " << find_nth_largest_min(array, 3) << endl;
+    cout << "3rd largest: " << find_nth_largest_stl(array, 3) << endl;
     return 0;
 }
