@@ -27,7 +27,9 @@ public:
 };
 
 LinkedList *shiftLinkedList(LinkedList *head, int k) {
-  LinkedList *prev = nullptr, *curr = head;
+    if (!head)
+        return nullptr;
+    LinkedList *prev = nullptr, *curr = head;
     
     int shift;
     int n = 0;
@@ -36,7 +38,7 @@ LinkedList *shiftLinkedList(LinkedList *head, int k) {
         prev = curr;
         curr = curr->next;
         n++;
-  }
+    }
     // convert to a circular linked list by making tail point to head
     if (prev)
         prev->next = head;
@@ -53,11 +55,11 @@ LinkedList *shiftLinkedList(LinkedList *head, int k) {
         prev = curr;
         curr = curr->next;
     }
-  // curr is now the new head and prev is now the new tail
+    // curr is now the new head and prev is now the new tail
     // mark next pointer of tail
     prev->next = nullptr;
     // return new head
-  return curr;
+    return curr;
 }
 
 

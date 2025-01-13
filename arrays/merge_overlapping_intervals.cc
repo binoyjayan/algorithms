@@ -19,28 +19,52 @@ Sample output:
 */
 
 #include <vector>
-using namespace std;
+#include <iomanip>
+#include <iostream>
 
-vector<vector<int>> mergeOverlappingIntervals(vector<vector<int>> intervals) {
-  // Write your code here.
-    vector<vector<int>> merged;
-    vector<vector<int>> sorted = intervals;
-    sort(sorted.begin(), sorted.end(), [](vector<int> a, vector<int> b) {
+void print_intervals(const std::string& s, const std::vector<std::vector<int>>& vec_of_vecs) {
+    std::cout << s << " [";
+    for (size_t i = 0; i < vec_of_vecs.size(); ++i) {
+        std::cout << "[";
+        for (size_t j = 0; j < vec_of_vecs[i].size(); ++j) {
+            std::cout << std::setw(2) << vec_of_vecs[i][j];
+            if (j < vec_of_vecs[i].size() - 1) {
+                std::cout << ", ";
+            }
+        }
+        std::cout << "]";
+        if (i < vec_of_vecs.size() - 1) {
+            std::cout << ", ";
+        }
+    }
+    std::cout << "]" << std::endl;
+}
+
+std::vector<std::vector<int>> mergeOverlappingIntervals(std::vector<std::vector<int>> intervals) {
+    std::vector<std::vector<int>> merged;
+    std::vector<std::vector<int>> sorted = intervals;
+    std::sort(sorted.begin(), sorted.end(), [](std::vector<int> a, std::vector<int> b) {
             return a[0] < b[0];
     });
     
     int n = 0;
     merged.push_back(sorted[0]);
     for (int i = 1; i < sorted.size(); i++) {
-        vector<int> interval = sorted[i];
+        std::vector<int> interval = sorted[i];
         if (merged[n][1] >= interval[0]) {
-            merged[n][1] = max(merged[n][1], interval[1]);
+            merged[n][1] = std::max(merged[n][1], interval[1]);
         } else {
             merged.push_back(interval);
             n++;
         }
     }
-  return merged;
+    return merged;
 }
 
-
+int main() {
+    std::vector<std::vector<int>> intervals = {{1, 3}, {2, 6}, {8, 10}, {15, 18}};
+    print_intervals("Overlapping Intervals", intervals);
+    auto merged = mergeOverlappingIntervals(intervals);
+    print_intervals("Merged Intervals     ", merged);
+    return 0;
+}

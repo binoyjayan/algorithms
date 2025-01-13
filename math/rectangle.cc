@@ -1,8 +1,10 @@
 
-// check if four points make a rectangle on a cartesian coordinate plane
+// Check if four points make a rectangle on a cartesian coordinate plane
+// Use the distance formula between two points on a plane.
+// dist = sqrt((x2-x1)^2 + (y2 - y1)^2)
 
 #include <vector>
-using namespace std;
+#include <iostream>
 
 struct Point {
     int x;
@@ -22,8 +24,23 @@ bool isRectangle(Point a, Point b, Point c, Point d) {
 
 bool isRectangleAll(Point a, Point b, Point c, Point d) {
     return isRectangle(a, b, c, d) ||
-             isRectangle(a, c, b, d) ||
-             isRectangle(a, d, b, c);
+           isRectangle(a, c, b, d) ||
+           isRectangle(a, d, b, c);
+}
+
+int main() {
+    Point a = {4, 1};
+    Point b = {3, -1};
+    Point c = {-3, 2};
+    Point d = {-2, 4};
+
+    if (isRectangleAll(a, b, c, d)) {
+        std::cout << "The points form a valid rectangle." << std::endl;
+    } else {
+        std::cout << "The points do not form a rectangle." << std::endl;
+    }
+
+    return 0;
 }
 
 

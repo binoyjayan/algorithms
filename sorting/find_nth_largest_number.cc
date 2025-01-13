@@ -28,7 +28,7 @@ void print_vector(const std::string s, const std::vector<int>& nums) {
 int partition(vector<int> &a, int left, int right) {
     int i = left;
     int j = right + 1;
-    int v = a[left]; //partitioning element
+    int v = a[left]; //partitioning (pivot) element
     while (true) {
         while (a[++i] < v) if (i == right) break;
         while (v < a[--j]) if (j == left) break;
